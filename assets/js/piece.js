@@ -14,11 +14,35 @@ class Piece {
   }
 
   draw() {
-    this.ctx.fillStyle = this.color;
     this.shape.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value > 0) {
+          this.ctx.fillStyle = this.color;
           this.ctx.fillRect(this.x + x, this.y + y, 1, 1);
+          this.ctx.strokeStyle = 'black'; // Border color
+          this.ctx.lineWidth = 0.05; // Border width
+          this.ctx.strokeRect(this.x + x, this.y + y, 1, 1);
+        }
+      });
+    });
+  }
+
+  drawGhost() {
+    const ghost = { ...this, y: this.y };
+
+    while (board.valid(ghost)) {
+      ghost.y++;
+    }
+    ghost.y--;
+
+    ghost.shape.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value > 0) {
+          this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'; // Ghost piece color
+          this.ctx.fillRect(ghost.x + x, ghost.y + y, 1, 1);
+          this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)'; // Border color
+          this.ctx.lineWidth = 0.05; // Border width
+          this.ctx.strokeRect(ghost.x + x, ghost.y + y, 1, 1);
         }
       });
     });

@@ -30,6 +30,7 @@ class Board {
 
   draw() {
     this.piece.draw();
+    this.piece.drawGhost();
     this.drawBoard();
   }
 
@@ -114,9 +115,22 @@ class Board {
         if (value > 0) {
           this.ctx.fillStyle = COLORS[value];
           this.ctx.fillRect(x, y, 1, 1);
+          this.ctx.strokeStyle = 'black'; // Border color
+          this.ctx.lineWidth = 0.05; // Border width
+          this.ctx.strokeRect(x, y, 1, 1);
         }
       });
     });
+
+    // Draw grid lines
+    this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)'; // Light gray color for grid lines
+    this.ctx.lineWidth = 0.05; // Thin lines
+
+    for (let x = 0; x < COLS; x++) {
+      for (let y = 0; y < ROWS; y++) {
+        this.ctx.strokeRect(x, y, 1, 1);
+      }
+    }
   }
 
   getEmptyGrid() {
